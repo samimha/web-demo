@@ -44,7 +44,7 @@ public class DummyTest {
     
     @Test
     public void dummyUnitTest2() {
-        assertEquals(1, 0);
+        assertEquals(1, 1);
     }
 
 
