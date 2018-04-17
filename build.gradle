@@ -16,6 +16,15 @@ plugins {
     //id 'application'
 }
 
+sourceSets {  
+    	integTest {
+        	java.srcDir file('src/integTest/java')
+        	resources.srcDir file('src/integTest/resources')
+    	}
+}
+
+
+
 //Include the jetty runner into the build/server folder
 task copyToLib(type: Copy) {
     into "$buildDir/server"				//Default $buildDir is build/
@@ -36,6 +45,14 @@ war.mustRunAfter clean
 // Define the main class for the application
 //mainClassName = 'App'
 
+task integTest(type: Test) {  
+    	  testClassesDirs = sourceSets.integTest.output.classesDirs
+    	  classpath = sourceSets.integTest.runtimeClasspath
+    	  mustRunAfter(test)
+
+          
+}
+
 dependencies {
     compileOnly 'org.eclipse.jetty:jetty-runner:9.4.9.v20180320'
     providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
@@ -45,6 +62,12 @@ dependencies {
 
     // Use JUnit test framework
     testCompile 'junit:junit:4.12'
+
+    integTestCompile configurations.testCompile
+    integTestRuntime configurations.testRuntime
+
+    integTestCompile sourceSets.main.output
+    integTestCompile sourceSets.test.output
 }
 
 // In this section you declare where to find the dependencies of your project
@@ -54,3 +77,5 @@ repositories {
     jcenter()
     mavenCentral()
 }
+
+
